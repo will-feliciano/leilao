@@ -1,0 +1,5 @@
+Avaliador (Alura\Leilao\Tests\Service\Avaliador)
+ [x] Obter maior valor with data set "leiloes"
+ [x] Obter menor valor with data set "leiloes"
+ [x] Obter maiores lances with data set "leiloes"
+

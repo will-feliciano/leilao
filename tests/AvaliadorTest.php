@@ -10,16 +10,21 @@ use PHPUnit\Framework\TestCase;
 
 class AvaliadorTest extends TestCase
 {
+    private $leiloeiro;
+
+    protected function setUp(): void
+    {
+        $this->leiloeiro = new Avaliador();
+    }
+
     /**
      * @dataProvider novoLeilao
      */
     public function testObterMaiorValor(Leilao $leilao)
-    {        
-        $leiloeiro = new Avaliador();
+    {
+        $this->leiloeiro->avalia($leilao);
 
-        $leiloeiro->avalia($leilao);
-
-        $valor = $leiloeiro->getMaiorValor();
+        $valor = $this->leiloeiro->getMaiorValor();
 
         self::assertEquals(2700, $valor);
     }
@@ -29,11 +34,9 @@ class AvaliadorTest extends TestCase
      */
     public function testObterMenorValor(Leilao $leilao)
     {
-        $leiloeiro = new Avaliador();
+        $this->leiloeiro->avalia($leilao);
 
-        $leiloeiro->avalia($leilao);
-
-        $valor = $leiloeiro->getMenorValor();
+        $valor = $this->leiloeiro->getMenorValor();
 
         self::assertEquals(1500, $valor);
     }
@@ -43,10 +46,9 @@ class AvaliadorTest extends TestCase
      */
     public function testObterMaioresLances(Leilao $leilao)
     {
-        $leiloeiro = new Avaliador();
-
-        $leiloeiro->avalia($leilao);
-        $maiores = $leiloeiro->getMaioresLances();
+        $this->leiloeiro->avalia($leilao);
+        
+        $maiores = $this->leiloeiro->getMaioresLances();
 
         static::assertCount(3, $maiores);
         static::assertEquals(2700, $maiores[0]->getValor());
@@ -69,7 +71,7 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($dani, 2300));
 
         return [
-            [$leilao]
+            "leiloes" => [$leilao]
         ];
     }    
 }
