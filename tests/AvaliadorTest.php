@@ -9,44 +9,52 @@ use Alura\Leilao\Service\Avaliador;
 use PHPUnit\Framework\TestCase;
 
 class AvaliadorTest extends TestCase
-{   
-    public function testObterMaiorValor()
-    {
-        $leilao = new Leilao("Fusca Branco");
-
-        $jacy = new Usuario('Jacy');
-        $will = new Usuario('Will');
-
-        $leilao->recebeLance(new Lance($jacy, 1000));
-        $leilao->recebeLance(new Lance($will, 1800));
-
+{
+    /**
+     * @dataProvider novoLeilao
+     */
+    public function testObterMaiorValor(Leilao $leilao)
+    {        
         $leiloeiro = new Avaliador();
+
         $leiloeiro->avalia($leilao);
 
         $valor = $leiloeiro->getMaiorValor();
 
-        self::assertEquals(1800, $valor);
+        self::assertEquals(2700, $valor);
     }
 
-    public function testObterMenorValor()
+    /**
+     * @dataProvider novoLeilao
+     */
+    public function testObterMenorValor(Leilao $leilao)
     {
-        $leilao = new Leilao("Fusca Branco");
-
-        $jacy = new Usuario('Jacy');
-        $will = new Usuario('Will');
-
-        $leilao->recebeLance(new Lance($jacy, 1000));
-        $leilao->recebeLance(new Lance($will, 1800));
-
         $leiloeiro = new Avaliador();
+
         $leiloeiro->avalia($leilao);
 
         $valor = $leiloeiro->getMenorValor();
 
-        self::assertEquals(1000, $valor);
+        self::assertEquals(1500, $valor);
     }
 
-    public function testObterMaioresLances()
+    /**
+     * @dataProvider novoLeilao
+     */
+    public function testObterMaioresLances(Leilao $leilao)
+    {
+        $leiloeiro = new Avaliador();
+
+        $leiloeiro->avalia($leilao);
+        $maiores = $leiloeiro->getMaioresLances();
+
+        static::assertCount(3, $maiores);
+        static::assertEquals(2700, $maiores[0]->getValor());
+        static::assertEquals(2300, $maiores[1]->getValor());
+        static::assertEquals(2000, $maiores[2]->getValor());
+    }
+
+    public function novoLeilao()
     {
         $leilao = new Leilao("Parati 1998 50km");
 
@@ -60,14 +68,8 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($wal, 2700));
         $leilao->recebeLance(new Lance($dani, 2300));
 
-        $leiloeiro = new Avaliador();
-
-        $leiloeiro->avalia($leilao);
-        $maiores = $leiloeiro->getMaioresLances();
-
-        static::assertCount(3, $maiores);
-        static::assertEquals(2700, $maiores[0]->getValor());
-        static::assertEquals(2300, $maiores[1]->getValor());
-        static::assertEquals(2000, $maiores[2]->getValor());
-    }
+        return [
+            [$leilao]
+        ];
+    }    
 }
