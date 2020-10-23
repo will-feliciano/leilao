@@ -1,3 +1,9 @@
+Leilao (Alura\Leilao\Tests\Model\Leilao)
+ [x] Leilao deve receber lances with data set "leilao 2 lances"
+ [x] Leilao deve receber lances with data set "leilao 1 lance"
+ [x] Leilao nao deve receber lance repetido
+ [x] Leilao nao deve aceitar mais de 5 lances por usuario
+
 Avaliador (Alura\Leilao\Tests\Service\Avaliador)
  [x] Obter maior valor with data set "leiloes"
  [x] Obter menor valor with data set "leiloes"
